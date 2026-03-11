@@ -40,5 +40,9 @@ The overall goal is to show a **secure-by-default** approach to cloud deployment
 
 <img width="1918" height="1006" alt="jsonData" src="https://github.com/user-attachments/assets/1ed8c2a6-0b9b-412b-9684-b8c98b3a577d" />
 
+# Stop container
+```bash 
+    docker stop phone-api-backend-local
+    docker rm phone-api-backend-local
 
 
