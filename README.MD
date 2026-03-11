@@ -40,9 +40,16 @@ The overall goal is to show a **secure-by-default** approach to cloud deployment
 
 <img width="1918" height="1006" alt="jsonData" src="https://github.com/user-attachments/assets/1ed8c2a6-0b9b-412b-9684-b8c98b3a577d" />
 
-# Stop container
-```bash 
-    docker stop phone-api-backend-local
-    docker rm phone-api-backend-local
+## Now using docker-compose to run the application
+1. Run the application using docker-compose:
+   ```bash
+   docker-compose up --build
+   ```
+2. Access the API at: http://localhost:3000/api/phones
+
+## Docker Compose Build and Run Output
+<img width="1916" height="807" alt="dockerCompose" src="https://github.com/user-attachments/assets/4a656422-adc7-4075-b555-a419530d0dbb" />
+
+<img width="1918" height="948" alt="jsonCompose" src="https://github.com/user-attachments/assets/48ab5b61-ec3e-4c9a-a59e-e712614b1175" />
 
 
