@@ -32,7 +32,6 @@ pipeline {
                         sh 'terraform init -input=false'
                         sh 'terraform plan -input=false -refresh=false -var="key_name=mykeypair"'
                     }
-                    }
                 }
             }
         }
