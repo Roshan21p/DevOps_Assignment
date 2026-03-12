@@ -13,10 +13,10 @@ pipeline {
             }
         }
 
-        stage('Infrastructure Security Scan') {
+        stage('Infrastructure Security Scan with Trivy') {
             steps {
                 dir('terraform') {
-                    echo 'Running Trivy scan on Terraform files...'
+                    echo 'Running Trivy scan on Terraform code...'
                     sh 'trivy config . --severity CRITICAL,HIGH'
                 }
             }
