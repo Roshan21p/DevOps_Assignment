@@ -17,7 +17,7 @@ pipeline {
             steps {
                 dir('terraform') {
                     echo 'Running Trivy scan on Terraform code...'
-                    sh 'trivy config . --severity CRITICAL,HIGH'
+                    sh 'trivy config . --severity CRITICAL,HIGH --exit-code 1'
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
                 ]]) {
                     dir('terraform') {
                         sh 'terraform init -input=false'
-                        sh 'terraform plan -refresh=false'
+                        sh 'terraform plan -input=false -refresh=false -var-file="terraform.tfvars"'
                     }
                 }
             }
