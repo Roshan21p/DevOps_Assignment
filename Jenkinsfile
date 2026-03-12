@@ -30,7 +30,7 @@ pipeline {
                 ]]) {
                     dir('terraform') {
                         sh 'terraform init -input=false'
-                        sh 'terraform plan -input=false -refresh=false'
+                        sh 'terraform plan -refresh=false'
                     }
                 }
             }
