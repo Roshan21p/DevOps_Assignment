@@ -3,13 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Roshan21p/DevOps_Assignment.git'
-
-            }
-        }
-
         stage('Check Terraform Files') {
             steps {
                 dir('terraform') {
@@ -20,49 +13,36 @@ pipeline {
 
         stage('Trivy Scan Terraform Code') {
             steps {
-                dir('terraform') {
-                    echo "Running Trivy scan on Terraform code..."
-
-                    sh '''
-                    docker run --rm \
-                    -v $(pwd):/workspace \
-                    aquasec/trivy:latest config /workspace \
-                    --exit-code 1 \
-                    --severity HIGH,CRITICAL
-                    '''
-                }
+                sh '''
+                docker run --rm \
+                -v /var/jenkins_home/workspace/Devops_Assignment/terraform:/workspace \
+                aquasec/trivy:latest config /workspace \
+                --exit-code 1 \
+                --severity HIGH,CRITICAL
+                '''
             }
         }
 
         stage('Terraform Init') {
             steps {
-                dir('terraform') {
-                    echo "Running Terraform init..."
-
-                    sh '''
-                    docker run --rm \
-                    -v $(pwd):/workspace \
-                    -w /workspace \
-                    hashicorp/terraform:latest init -input=false
-                    '''
-                }
+                sh '''
+                docker run --rm \
+                -v /var/jenkins_home/workspace/Devops_Assignment/terraform:/workspace \
+                -w /workspace \
+                hashicorp/terraform:latest init
+                '''
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                dir('terraform') {
-                    echo "Running Terraform plan..."
-
-                    sh '''
-                    docker run --rm \
-                    -v $(pwd):/workspace \
-                    -w /workspace \
-                    hashicorp/terraform:latest plan \
-                    -input=false \
-                    -var-file=terraform.tfvars
-                    '''
-                }
+                sh '''
+                docker run --rm \
+                -v /var/jenkins_home/workspace/Devops_Assignment/terraform:/workspace \
+                -w /workspace \
+                hashicorp/terraform:latest plan \
+                -var-file=terraform.tfvars
+                '''
             }
         }
 
