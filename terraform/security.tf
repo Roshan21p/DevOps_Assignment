@@ -17,15 +17,16 @@ resource "aws_security_group" "web_sg" {
     from_port   = var.app_port
     to_port     = var.app_port
     protocol    = "tcp"
-    cidr_blocks = [var.admin_cidr]   # <-- Only your IP, not 0.0.0.0/0
+    cidr_blocks = ["0.0.0.0/0"]  
   }
 
+  # Jenkins only from your public IP (NOT 0.0.0.0/0)
   ingress {
     description = "Jenkins access"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.admin_cidr]
   }
 
   egress {
