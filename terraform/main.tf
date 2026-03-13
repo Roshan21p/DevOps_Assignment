@@ -67,7 +67,7 @@ resource "aws_instance" "web" {
   associate_public_ip_address = true
 
   root_block_device {
-    encrypted = true
+    encrypted = false
   }
 
   # Fixes AWS-0028 (IMDSv2 requirement)
