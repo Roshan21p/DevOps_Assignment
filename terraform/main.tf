@@ -25,7 +25,7 @@ resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "ap-south-1b"
-   map_public_ip_on_launch = false   # Fixes AWS-0164
+   map_public_ip_on_launch = true
 
   tags = {
     Name = "devops-assignment-public-subnet"
@@ -79,9 +79,4 @@ resource "aws_instance" "web" {
   tags = {
     Name = "devops-assignment-ec2"
   }
-}
-
-resource "aws_eip" "web_eip" {
-  instance = aws_instance.web.id
-  vpc      = true
 }

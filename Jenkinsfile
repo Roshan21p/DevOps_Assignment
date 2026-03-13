@@ -1,39 +1,69 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_DEFAULT_REGION = 'ap-south-1'
-    }
-
     stages {
+
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/Roshan21p/DevOps_Assignment.git'
+                git 'https://github.com/Roshan21p/DevOps_Assignment.git'
             }
         }
 
-        stage('Infrastructure Security Scan with Trivy') {
+        stage('Check Terraform Files') {
             steps {
                 dir('terraform') {
-                    echo 'Running Trivy scan on Terraform code...'
-                    sh 'trivy config . --severity CRITICAL,HIGH'
+                    sh 'ls -l'
+                }
+            }
+        }
+
+        stage('Trivy Scan Terraform Code') {
+            steps {
+                dir('terraform') {
+                    echo "Running Trivy scan on Terraform code..."
+
+                    sh '''
+                    docker run --rm \
+                    -v $(pwd):/workspace \
+                    aquasec/trivy:latest config /workspace \
+                    --exit-code 1 \
+                    --severity HIGH,CRITICAL
+                    '''
+                }
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir('terraform') {
+                    echo "Running Terraform init..."
+
+                    sh '''
+                    docker run --rm \
+                    -v $(pwd):/workspace \
+                    -w /workspace \
+                    hashicorp/terraform:latest init -input=false
+                    '''
                 }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-creds'
-                ]]) {
-                    dir('terraform') {
-                        sh 'terraform init -input=false'
-                        sh 'terraform plan -input=false -refresh=false -var-file="terraform.tfvars"'
-                    }
+                dir('terraform') {
+                    echo "Running Terraform plan..."
+
+                    sh '''
+                    docker run --rm \
+                    -v $(pwd):/workspace \
+                    -w /workspace \
+                    hashicorp/terraform:latest plan \
+                    -input=false \
+                    -var-file=terraform.tfvars
+                    '''
                 }
             }
         }
+
     }
 }
