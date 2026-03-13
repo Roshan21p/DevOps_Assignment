@@ -141,7 +141,7 @@ terraform apply
 ### Terraform Output
 After applying the Terraform configuration, the EC2 instance was created successfully.
 
-- **Instance Public IP:** `65.2.142.169`
+- **Instance Public IP:** `13.201.75.251`
 
 ---
 
@@ -182,7 +182,7 @@ After the EC2 instance was created, the backend application was deployed on the 
 
 ### SSH into EC2
 ```bash
-ssh -i "your-key.pem" ubuntu@65.2.142.169
+ssh -i "your-key.pem" ubuntu@13.201.75.251
 ```
 
 ### Install Docker and Git
@@ -216,7 +216,7 @@ sudo docker run -d --name phone-api-container -p 3000:3000 phone-api-backend
 ```
 
 ### Public API URL
-`http://65.2.142.169:3000/api/phones`
+`http://13.201.75.251:3000/api/phones`
 
 ---
 

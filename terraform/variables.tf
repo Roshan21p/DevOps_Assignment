@@ -21,7 +21,6 @@ variable "app_port" {
   default     = 3000
 }
 
-
 variable "admin_cidr" {
   description = "The CIDR block (IP address) allowed to access admin ports (ssh/jenkins)"
   type        = string

@@ -1,5 +1,10 @@
+output "instance_elastic_ip" {
+  description = "Elastic (static) public IP of EC2 instance"
+  value       = aws_eip.web_eip.public_ip
+}
+
 output "instance_public_ip" {
-  description = "Public IP address of EC2 instance"
+  description = "Auto-assigned public IP of EC2 instance (may change, do not use if using EIP)"
   value       = aws_instance.web.public_ip
 }
 

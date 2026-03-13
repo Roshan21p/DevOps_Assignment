@@ -66,7 +66,6 @@ resource "aws_instance" "web" {
   key_name                    = var.key_name
   associate_public_ip_address = true
 
-   # Fixes AWS-0131 (encryption)
   root_block_device {
     encrypted = true
   }
@@ -80,4 +79,9 @@ resource "aws_instance" "web" {
   tags = {
     Name = "devops-assignment-ec2"
   }
+}
+
+resource "aws_eip" "web_eip" {
+  instance = aws_instance.web.id
+  vpc      = true
 }
