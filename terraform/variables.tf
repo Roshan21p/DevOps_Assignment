@@ -21,8 +21,8 @@ variable "app_port" {
   default     = 3000
 }
 
-variable "allowed_ssh_cidr" {
-  description = "Intentionally insecure SSH CIDR for first scan"
+
+variable "admin_cidr" {
+  description = "The CIDR block (IP address) allowed to access admin ports (ssh/jenkins)"
   type        = string
-  default     = "0.0.0.0/0"
 }
