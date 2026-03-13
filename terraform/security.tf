@@ -3,12 +3,13 @@ resource "aws_security_group" "web_sg" {
   description = "Allow SSH and app access"
   vpc_id      = aws_vpc.main.id
 
+   # SSH only from YOUR PUBLIC IP (fixes AWS-0107)
   ingress {
-    description = "SSH from anywhere - intentional vulnerability"
+    description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.admin_cidr]  # e.g. 1.2.3.4/32
   }
 
   ingress {
@@ -16,7 +17,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = var.app_port
     to_port     = var.app_port
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.admin_cidr]   # <-- Only your IP, not 0.0.0.0/0
   }
 
   ingress {
@@ -28,10 +29,10 @@ resource "aws_security_group" "web_sg" {
   }
 
   egress {
-    description = "Allow all outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    description = "HTTP outbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

@@ -25,7 +25,7 @@ resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "ap-south-1b"
-  map_public_ip_on_launch = true
+   map_public_ip_on_launch = false   # Fixes AWS-0164
 
   tags = {
     Name = "devops-assignment-public-subnet"
@@ -66,9 +66,16 @@ resource "aws_instance" "web" {
   key_name                    = var.key_name
   associate_public_ip_address = true
 
+   # Fixes AWS-0131 (encryption)
   root_block_device {
-    encrypted = false
+    encrypted = true
   }
+
+  # Fixes AWS-0028 (IMDSv2 requirement)
+  metadata_options {
+    http_endpoint = "enabled"
+     http_tokens   = "required"
+     }
 
   tags = {
     Name = "devops-assignment-ec2"
